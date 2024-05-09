@@ -1,232 +1,120 @@
-import * as React from "react";
-import { Text, StyleSheet, View, Image, Pressable } from "react-native";
-import { useNavigation } from "@react-navigation/native";
-import { Padding, Color, FontFamily, Border, FontSize } from "../GlobalStyles";
+import React, {useState} from "react";
+import { View, Text, Button, StyleSheet, ScrollView, Image, Dimensions, TextInput, TouchableOpacity } from "react-native";
+
+const screenWidth = Dimensions.get('window').width;
+const screenHeight = Dimensions.get('window').height;
+const imageSize = screenHeight * 0.1;
 
 function Onboarding({navigation}) {
-  //const navigation = useNavigation();
+    const [nickname, setNickname] = useState(''); 
 
-  return (
-    <View style={styles.onboarding}>
-      <View
-        style={[
-          styles.welcomeToBookswapLetMeKnWrapper,
-          styles.profileParentPosition,
-        ]}
+    const profiles = [
+        { id: 1, img: require('../assets/favicon.png'), name: 'User1' },
+        { id: 2, img: require('../assets/favicon.png'), name: 'User2' },
+        { id: 3, img: require('../assets/favicon.png'), name: 'User3' },
+        { id: 4, img: require('../assets/favicon.png'), name: 'User4' }
+    ];
+
+    const handlePress = (name) => {
+        // 네비게이션을 통해 Welcome 스크린으로 이동, 프로필 이름을 파라미터로 전달
+        navigation.navigate('Welcome', { userName: name });
+    };
+
+    return (
+        <View style={styles.frame}>
+      <Text style={styles.heading}>Welcome to BookSwap!{'\n'}Let me know about you.</Text>
+      <Text style={styles.text}>Profile</Text>
+      <ScrollView
+          contentContainerStyle={styles.contentContainer}
+          horizontal={true} // 가로 스크롤 활성화
+          style={styles.scrollView}
       >
-        <Text
-          style={[styles.welcomeToBookswap, styles.profileTypo]}
-        >{`Welcome to BookSwap!
-Let me know about you.`}</Text>
-      </View>
-      <Pressable
-        //style={[styles.profileParent, styles.profileParentPosition]}
-        //onPress={() => navigation.navigate("Onboarding2")}
-      >
-        <Text style={[styles.profile, styles.profileTypo]}>Profile</Text>
-        <View style={[styles.groupParent, styles.parentFlexBox]}>
-          <View style={styles.groupChildLayout}>
-            <View style={[styles.groupChild, styles.groupChildPosition]} />
-            <View style={[styles.xl64Profile, styles.groupChildLayout]}>
-              <View style={[styles.circle, styles.circlePosition]} />
-              <Text style={[styles.text, styles.textTypo]}>🎃</Text>
-            </View>
-          </View>
-          <View style={[styles.xl64Profile1, styles.frameChildLayout]}>
-            <View style={[styles.circle1, styles.circlePosition]} />
-            <Text style={[styles.text, styles.textTypo]}>🐶</Text>
-          </View>
-          <View style={[styles.xl64Profile1, styles.frameChildLayout]}>
-            <View style={[styles.circle2, styles.circlePosition]} />
-            <Text style={[styles.text2, styles.textTypo]}>🌈</Text>
-          </View>
-          <Image
-            style={styles.frameChildLayout}
-            resizeMode="cover"
-            source={require("../assets/group-20.png")}
-          />
-        </View>
-        <View style={styles.parentFlexBox}>
-          <Text style={[styles.profile, styles.profileTypo]}>Nickname</Text>
-          <View style={[styles.input, styles.inputFlexBox]}>
-            <Text style={[styles.input1, styles.input1Typo]} />
-          </View>
-        </View>
-      </Pressable>
-      <View style={[styles.buttonLgWrapper, styles.groupChildPosition]}>
-        <View style={[styles.buttonLg, styles.inputFlexBox]}>
-          <Text style={[styles.button, styles.input1Typo]}>Complete</Text>
-        </View>
-        <Button 
-                title="go to main" 
-                onPress={() => navigation.navigate('Main')}
+        {profiles.map((profile) => (
+                    <TouchableOpacity key={profile.id} style={styles.imageContainer} onPress={() => handlePress(profile.name)}>
+                        <Image source={profile.img} style={styles.image} />
+                        <Text style={styles.text}>{profile.name}</Text>
+                    </TouchableOpacity>
+                ))}
+      </ScrollView>
+      <Text style={styles.text}>Nickname</Text>
+      <TextInput
+          //placeholder="Enter your nickname..."
+            style={styles.input}
+            onChangeText={setNickname} // 텍스트 변경 시 상태 업데이트
+            value={nickname}
+      />
+      <View style={styles.buttonContainer}>
+      <Button 
+            title="Go to Main" 
+            onPress={() => navigation.navigate('Onboarding2')}
+            color={nickname ? '#40B250' : '#F2F3F7'} // 텍스트 입력에 따라 버튼 색상 변경
+            disabled={!nickname}
         />
       </View>
     </View>
-  );
-};
+    );
+}
 
 const styles = StyleSheet.create({
-  profileParentPosition: {
-    paddingHorizontal: Padding.p_xl,
-    width: 360,
-    left: 0,
-    position: "absolute",
-  },
-  profileTypo: {
-    textAlign: "center",
-    color: Color.iconOnLightActive,
-    fontFamily: FontFamily.subtitle03Bold,
-    fontWeight: "700",
-  },
-  parentFlexBox: {
-    marginTop: 20,
-    alignSelf: "stretch",
-    justifyContent: "center",
-  },
-  groupChildPosition: {
-    bottom: 0,
-    position: "absolute",
-  },
-  groupChildLayout: {
-    height: 64,
-    width: 64,
-  },
-  circlePosition: {
-    borderRadius: Border.br_181xl,
-    left: "7.81%",
-    bottom: "7.81%",
-    right: "7.81%",
-    top: "7.81%",
-    width: "84.38%",
-    height: "84.38%",
-    position: "absolute",
-  },
-  textTypo: {
-    textAlign: "left",
-    color: Color.labelColorLightPrimary,
-    fontFamily: FontFamily.subtitle02Regular,
-    fontWeight: "500",
-    fontSize: FontSize.size_21xl,
-    left: "50%",
-    top: "50%",
-    position: "absolute",
-  },
-  frameChildLayout: {
-    marginLeft: 10,
-    height: 64,
-    width: 64,
-  },
-  inputFlexBox: {
-    alignSelf: "stretch",
-    alignItems: "center",
-    flexDirection: "row",
-  },
-  input1Typo: {
-    color: Color.iconOnLightDisable,
-    textAlign: "left",
-    fontFamily: FontFamily.subtitle02Regular,
-    fontWeight: "500",
-  },
-  welcomeToBookswap: {
-    fontSize: FontSize.heading02Bold_size,
-    lineHeight: 30,
-  },
-  welcomeToBookswapLetMeKnWrapper: {
-    top: 60,
-    paddingVertical: Padding.p_3xs,
-    justifyContent: "center",
-    alignItems: "center",
-    paddingHorizontal: Padding.p_xl,
-    flexDirection: "row",
-  },
-  profile: {
-    fontSize: FontSize.subtitle03Bold_size,
-    lineHeight: 18,
-  },
-  groupChild: {
-    right: 0,
-    borderRadius: Border.br_13xl,
-    backgroundColor: Color.container100,
-    height: 64,
-    width: 64,
-  },
-  circle: {
-    backgroundColor: Color.colorGoldenrod,
-  },
-  text: {
-    marginTop: -20,
-    marginLeft: -20,
-  },
-  xl64Profile: {
-    top: 0,
-    left: 0,
-    position: "absolute",
-    width: 64,
-    overflow: "hidden",
-  },
-  circle1: {
-    backgroundColor: Color.colorYellowgreen,
-  },
-  xl64Profile1: {
-    opacity: 0.4,
-    overflow: "hidden",
-  },
-  circle2: {
-    backgroundColor: Color.colorGray_100,
-  },
-  text2: {
-    marginTop: -19,
-    marginLeft: -19,
-  },
-  groupParent: {
-    flexDirection: "row",
-    marginTop: 20,
-  },
-  input1: {
-    fontSize: FontSize.subtitle02Regular_size,
-    lineHeight: 21,
-    flex: 1,
-  },
-  input: {
-    borderRadius: Border.br_mini,
-    borderStyle: "solid",
-    borderColor: Color.container200,
-    borderWidth: 1,
-    height: 30,
-    paddingLeft: Padding.p_xs,
-    paddingRight: Padding.p_7xs,
-    marginTop: 10,
-    backgroundColor: Color.systemBackgroundLightPrimary,
-  },
-  profileParent: {
-    top: 150,
-    paddingVertical: 0,
-  },
-  button: {
-    fontSize: FontSize.subtitle01Regular_size,
-    lineHeight: 24,
-  },
-  buttonLg: {
-    borderRadius: Border.br_xl,
-    height: 40,
-    padding: Padding.p_3xs,
-    backgroundColor: Color.container100,
-    justifyContent: "center",
-  },
-  buttonLgWrapper: {
-    padding: Padding.p_xl,
-    width: 360,
-    bottom: 0,
-    left: 0,
-  },
-  onboarding: {
-    width: "100%",
-    height: 640,
-    overflow: "hidden",
-    flex: 1,
-    backgroundColor: Color.systemBackgroundLightPrimary,
-  },
-});
+    frame: {
+        flex: 1,
+        alignItems: 'center', // 모든 요소를 가로 중앙 정렬
+        justifyContent: 'center', // 세로 방향에서도 중앙 정렬 (필요한 경우)
+        width: screenWidth, // 프레임의 가로 크기를 화면에 맞춤
+        height: screenHeight // 프레임의 세로 크기를 화면에 맞춤
+      },
+    container: {
+      display: 'flex',
+      width: '100%',
+      height: '100vh',
+      padding: '10px 20px',
+      justifyContent: 'center',
+      alignItems: 'center',
+      backgroundColor: '#FFFFFF' // 배경 색을 여기에 지정하세요.
+    },
+    heading: {
+      color: '#0C0E12', // 이 색상 코드는 주어진 변수에 따라 변경될 수 있습니다.
+      textAlign: 'center',
+      marginTop: screenHeight*0.1,
+      fontFamily: 'Inter',
+      fontSize: 20,
+      fontStyle: 'normal',
+      fontWeight: 'bold',
+      
+      lineHeight: 30 // 150% of 20px
+    },
+    text: {
+        color: '#0C0E12', // 이 색상 코드는 주어진 변수에 따라 변경될 수 있습니다.
+        textAlign: 'center',
+        fontFamily: 'Inter',
+        fontSize: 12,
+        fontStyle: 'normal',
+        //fontWeight: 700,
+        lineHeight: 30 // 150% of 20px
+      },
+    contentContainer: {
+        //alignSelf: 'center', // 항목들을 세로 중앙에 정렬
+        padding: 10 // 컨텐츠 주변에 패딩 추가
+      },
+      scrollView: {
+        height: screenHeight * 0.13
+    },
+      input: {
+        alignItems: 'center',
+        justifyContent: 'center',
+        width: screenWidth - 40,
+        height: 40, // 입력 필드의 높이 설정
+        paddingHorizontal: 10, // 입력 필드 내부의 좌우 패딩
+        borderRadius: 15, // 모서리 둥글기
+        borderWidth: 1, // 테두리 두께
+        borderColor: '#DEE1EB', // 테두리 색상
+        backgroundColor: '#FFF', // 배경 색상
+      },
+      buttonContainer: {
+        width: screenWidth - 40, // 버튼의 가로 길이를 조정하여 프레임에 맞춤
+        marginTop: screenHeight*0.4,
+        marginBottom: 20 // 하단 여백 추가
+    }
+  });
 
 export default Onboarding;

@@ -1,14 +1,16 @@
 import * as React from "react";
 import { Image } from "expo-image";
-import { StyleSheet, View, Text, Pressable } from "react-native";
+import { StyleSheet, View, Text, Pressable, TouchableWithoutFeedback } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { Padding, FontSize, FontFamily, Color } from "../GlobalStyles";
 
 function Welcome({navigation}) {
   return (
-    <Pressable 
+    <TouchableWithoutFeedback onPress={() => navigation.navigate('Home')}>
+    <LinearGradient
       style={styles.frameParent}
-      onPress={() => navigation.navigate('Home')}
+      locations={[0, 1]}
+      colors={["#119b86", "#40b250"]}
     >
       <View style={[styles.notopartyPopperParent, styles.parentSpaceBlock]}>
         <Image
@@ -28,16 +30,18 @@ function Welcome({navigation}) {
         />
       </View>
       <Text style={styles.welcomeToBookswap}>Welcome to BookSwap!</Text>
-    </Pressable>
+      </LinearGradient>
+    </TouchableWithoutFeedback>
   );
 };
 
 const styles = StyleSheet.create({
   frameParent: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: '#28A66B'
+    width: "100%",
+    height: "100%",
+    backgroundColor: "transparent",
+    overflow: "hidden",
   },
   parentSpaceBlock: {
     paddingVertical: Padding.p_xl,

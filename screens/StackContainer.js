@@ -9,6 +9,7 @@ import Splash from "./Splash";
 import Start from "./Start";
 import Main from "./Main";
 import Welcome from "./Welcome";
+import Onboarding from "./Onboarding";
 import Onboarding2 from "./Onboarding2";
 import Home from "./Home";
 import Search from "./Search";
@@ -22,10 +23,11 @@ const Stack = createStackNavigator();
 export default function App() {
   return (
     <Stack.Navigator>
+      <Stack.Screen name="Splash" component={Splash} options={{headerShown: false,}}/>
       <Stack.Screen name="Home" component={Home} options={{headerShown: false,}}/>
       <Stack.Screen name="Search" component={Search} options={{headerShown: false,}}/>
       <Stack.Screen name="HomeNotification" component={HomeNotification} options={{headerShown: false,}}/>
-      <Stack.Screen name="Splash" component={Splash} options={{headerShown: false,}}/>
+      <Stack.Screen name="Onboarding" component={Onboarding} options={{headerShown: false,}}/>
       <Stack.Screen name="Start" component={Start} options={{headerShown: false,}}/>
       <Stack.Screen name="Main" component={Main} options={{headerShown: false,}}/>
       <Stack.Screen name="Welcome" component={Welcome} options={{headerShown: false,}}/>

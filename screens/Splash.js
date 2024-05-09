@@ -5,7 +5,7 @@ import { LinearGradient } from "expo-linear-gradient";
 
 function Splash({navigation}) {
   return (
-    <TouchableWithoutFeedback onPress={() => navigation.navigate('Start')}>
+    <TouchableWithoutFeedback onPress={() => navigation.navigate('Onboarding')}>
     <LinearGradient
       style={styles.splashScreen}
       locations={[0, 1]}
@@ -19,7 +19,8 @@ function Splash({navigation}) {
         />
         <Image
           style={styles.logoType}
-          contentFit="cover"
+          //contentFit="cover"
+            resizeMode="contain"
           source={require("../assets/logo--type.png")}
         />
       </View>
