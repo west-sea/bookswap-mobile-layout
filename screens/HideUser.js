@@ -1,12 +1,12 @@
 import React from "react";
 import { View, Text } from "react-native";
 
-function Bookshelf({navigation}) {
+function HideUser({navigation}) {
   return (
     <View>
-      <Text>Bookshelf!</Text>
+      <Text>HideUser!</Text>
     </View>
   );
 }
 
-export default Bookshelf;
+export default HideUser;

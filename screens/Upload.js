@@ -1,12 +1,12 @@
 import React from "react";
 import { View, Text } from "react-native";
 
-function Bookshelf({navigation}) {
+function Upload({navigation}) {
   return (
     <View>
-      <Text>Bookshelf!</Text>
+      <Text>Upload!</Text>
     </View>
   );
 }
 
-export default Bookshelf;
+export default Upload;

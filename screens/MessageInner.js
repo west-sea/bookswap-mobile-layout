@@ -1,12 +1,12 @@
 import React from "react";
 import { View, Text } from "react-native";
 
-function Bookshelf({navigation}) {
+function MessageInner({navigation}) {
   return (
     <View>
-      <Text>Bookshelf!</Text>
+      <Text>Message Inner!</Text>
     </View>
   );
 }
 
-export default Bookshelf;
+export default MessageInner;

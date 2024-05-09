@@ -1,189 +1,80 @@
 import * as React from "react";
 import { Image } from "expo-image";
-import { StyleSheet, View, Text, Pressable } from "react-native";
+import { ScrollView, StyleSheet, View, Text, Pressable, Dimensions } from "react-native";
 import { Padding, FontFamily, Border, FontSize, Color } from "../GlobalStyles";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
-const Home = () => {
+const screenWidth = Dimensions.get('window').width;
+const screenHeight = Dimensions.get('window').height;
+
+function Home({navigation}) {
+  const [activeTab, setActiveTab] = React.useState('All');
+
+  const images = {
+    image5: require("../assets/image-5.png"),
+    image6: require("../assets/image-6.png"),
+    image4: require("../assets/image-4.png"),
+    sm18Cancel: require("../assets/sm18--cancel.png")
+  };
+
+  const books = [
+    { title: "A Little Life", author: "Yanagihara, Hanya", genre: "Novel", image: 'image5' },
+    { title: "A Little Life", author: "Yanagihara, Hanya", genre: "Novel", image: 'image5' },
+    { title: "A Little Life", author: "Yanagihara, Hanya", genre: "Novel", image: 'image5' },
+    { title: "Poems", author: "Louise Gluck", genre: "Poetry", image: 'image6' },
+    { title: "Small Things Like These", author: "Claire Keegan", genre: "Novel", image: 'image4' },
+    { title: "Small Things Like These", author: "Claire Keegan", genre: "Novel", image: 'sm18Cancel' }
+  ];
+
+  const filteredBooks = activeTab === 'All' ? books : books.filter(book => book.genre === activeTab);
+
   return (
     <View style={styles.home}>
-      <View style={[styles.bookItemParent, styles.bookItemSpaceBlock]}>
-        <View style={styles.bookItem}>
-          <View style={styles.bookImg}>
-            <Image
-              style={[styles.image5Icon, styles.image5IconLayout]}
-              contentFit="cover"
-              source={require("../assets/image-5.png")}
-            />
-            <View style={[styles.bookImgChild, styles.image5IconPosition]} />
-          </View>
-          <View style={styles.frameParent}>
-            <View style={styles.titleParent}>
-              <Text style={styles.title}>A Little Life</Text>
-              <Text style={[styles.author, styles.textTypo]}>
-                Yanagihara, Hanya
-              </Text>
-              <Text style={[styles.novel, styles.textTypo]}>04/05 · Novel</Text>
+      <ScrollView style={[styles.scrollContainer, {paddingTop: 120, paddingBottom: 180}]}
+      //contentContainerStyle={minHeight = screenHeight*0.3}
+      >
+        {filteredBooks.map((book, index) => (
+          <View key={index} style={styles.bookItem}>
+            <View style={styles.bookImg}>
+              <Image
+                style={[styles.image5Icon, styles.image5IconLayout]}
+                contentFit="cover"
+                source={images[book.image]}
+              />
+              <View style={[styles.bookImgChild, styles.image5IconPosition]} />
             </View>
-            <View style={[styles.tagParent, styles.tagFlexBox]}>
-              <View style={[styles.tag, styles.tagSpaceBlock]}>
-                <View style={styles.tagWrapper}>
-                  <Text style={[styles.tag1, styles.tagTypo]}>Request</Text>
-                </View>
-                <Image
-                  style={[styles.sm18Message, styles.sm18Layout]}
-                  contentFit="cover"
-                  source={require("../assets/sm18--message.png")}
-                />
+            <View style={styles.frameParent}>
+              <View style={styles.titleParent}>
+                <Text style={styles.title}>{book.title}</Text>
+                <Text style={[styles.author, styles.textTypo]}>{book.author}</Text>
+                <Text style={[styles.novel, styles.textTypo]}>{book.genre}</Text>
               </View>
-              <Text style={[styles.hideFrom1, styles.textTypo]} />
             </View>
           </View>
-          <Image
-            style={[styles.md24Menu, styles.md24Layout]}
-            contentFit="cover"
-            source={require("../assets/menu.png")}
-          />
-        </View>
-        <View style={styles.bookItem}>
-          <View style={styles.bookImg}>
-            <Image
-              style={[styles.image5Icon, styles.image5IconLayout]}
-              contentFit="cover"
-              source={require("../assets/image-6.png")}
-            />
-            <View style={[styles.bookImgChild, styles.image5IconPosition]} />
-          </View>
-          <View style={styles.frameParent}>
-            <View style={styles.titleParent}>
-              <Text style={styles.title}>Poems</Text>
-              <Text style={[styles.author, styles.textTypo]}>Louise Gluck</Text>
-              <Text style={[styles.novel, styles.textTypo]}>
-                03/27 · Poetry
-              </Text>
-            </View>
-            <View style={[styles.tagParent, styles.tagFlexBox]}>
-              <View style={[styles.tag2, styles.tagSpaceBlock]}>
-                <View style={styles.tagWrapper}>
-                  <Text style={[styles.tag3, styles.tagTypo]}>Requested</Text>
-                </View>
-                <Image
-                  style={styles.sm18Layout}
-                  contentFit="cover"
-                  source={require("../assets/sm18--check.png")}
-                />
-              </View>
-              <Text style={[styles.hideFrom1, styles.textTypo]} />
-            </View>
-          </View>
-          <Image
-            style={[styles.md24Menu, styles.md24Layout]}
-            contentFit="cover"
-            source={require("../assets/menu.png")}
-          />
-        </View>
-        <View style={styles.bookItem}>
-          <View style={styles.bookImg}>
-            <Image
-              style={[styles.image5Icon, styles.image5IconLayout]}
-              contentFit="cover"
-              source={require("../assets/image-4.png")}
-            />
-            <View style={[styles.bookImgChild, styles.image5IconPosition]} />
-          </View>
-          <View style={styles.frameParent}>
-            <View style={styles.titleParent}>
-              <Text style={styles.title}>Small Things Like These</Text>
-              <Text style={[styles.author, styles.textTypo]}>
-                Claire Keegan
-              </Text>
-              <Text style={[styles.novel, styles.textTypo]}>03/20 · Novel</Text>
-            </View>
-            <View style={[styles.tagParent, styles.tagFlexBox]}>
-              <View style={[styles.tag4, styles.tagFlexBox]}>
-                <Text style={[styles.tag5, styles.tagTypo]}>Reserved</Text>
-              </View>
-              <Text style={[styles.hideFrom1, styles.textTypo]} />
-            </View>
-          </View>
-          <Image
-            style={[styles.md24Menu, styles.md24Layout]}
-            contentFit="cover"
-            source={require("../assets/menu.png")}
-          />
-        </View>
-        <View style={styles.bookItem}>
-          <View style={styles.bookImg}>
-            <Image
-              style={[styles.image5Icon, styles.image5IconLayout]}
-              contentFit="cover"
-              source={require("../assets/sm18--cancel.png")}
-            />
-            <View style={[styles.bookImgChild, styles.image5IconPosition]} />
-          </View>
-          <View style={styles.frameParent}>
-            <View style={styles.titleParent}>
-              <Text style={styles.title}>Small Things Like These</Text>
-              <Text style={[styles.author, styles.textTypo]}>
-                Claire Keegan
-              </Text>
-              <Text style={[styles.novel, styles.textTypo]}>03/20 · Novel</Text>
-            </View>
-            <View style={[styles.tagParent, styles.tagFlexBox]}>
-              <View style={[styles.tag4, styles.tagFlexBox]}>
-                <Text style={[styles.tag5, styles.tagTypo]}>Reserved</Text>
-              </View>
-              <Text style={[styles.hideFrom1, styles.textTypo]} />
-            </View>
-          </View>
-          <Image
-            style={[styles.md24Menu, styles.md24Layout]}
-            contentFit="cover"
-            source={require("../assets/menu.png")}
-          />
-        </View>
-      </View>
+        ))}
+      </ScrollView>
       <View style={[styles.tabGroupHomeWrapper, styles.barPosition]}>
         <View style={styles.tabGroupHome}>
-          <View style={styles.tab}>
-            <Text style={[styles.tab1, styles.tabTypo]}>All</Text>
-            <View style={[styles.tabChild, styles.tabLayout]} />
-          </View>
-          <View style={styles.tab}>
-            <Text style={[styles.tab3, styles.tabTypo]}>Major</Text>
-            <View style={[styles.tabItem, styles.tabLayout]} />
-          </View>
-          <View style={styles.tab}>
-            <Text style={[styles.tab3, styles.tabTypo]}>Novel</Text>
-            <View style={[styles.tabItem, styles.tabLayout]} />
-          </View>
-          <View style={styles.tab}>
-            <Text style={[styles.tab3, styles.tabTypo]}>Essay</Text>
-            <View style={[styles.tabItem, styles.tabLayout]} />
-          </View>
-          <View style={styles.tab}>
-            <Text style={[styles.tab3, styles.tabTypo]}>Poetry</Text>
-            <View style={[styles.tabItem, styles.tabLayout]} />
-          </View>
-          <View style={styles.tab}>
-            <Text style={[styles.tab3, styles.tabTypo]}>Hobby</Text>
-            <View style={[styles.tabItem, styles.tabLayout]} />
-          </View>
-          <View style={styles.tab}>
-            <Text style={[styles.tab3, styles.tabTypo]}>Art</Text>
-            <View style={[styles.tabItem, styles.tabLayout]} />
-          </View>
+          {['All', 'Major', 'Novel', 'Essay', 'Poetry', 'Hobby'].map((tab, idx) => (
+            <Pressable key={idx} onPress={() => setActiveTab(tab)}>
+              <View style={styles.tab}>
+                <Text style={[styles.tabTypo, activeTab === tab ? styles.activeTabText : styles.inactiveTabText]}>{tab}</Text>
+                {activeTab === tab && <View style={[styles.tabItem, styles.tabLayout]} />}
+              </View>
+            </Pressable>
+          ))}
         </View>
       </View>
       <View style={[styles.bar, styles.barPosition]}>
         <View style={styles.logoTypeWrapper}>
           <Image
             style={styles.logoType}
-            contentFit="cover"
-            source={require("../assets/Symbol.png")}
+            //contentFit="cover"
+            resizeMode="contain"
+            source={require("../assets/symbol-text-black.png")}
           />
         </View>
-        <Pressable style={styles.md24Layout} onPress={() => {}}>
+        <Pressable style={styles.md24Layout} onPress={() => navigation.navigate('Search')}>
           <Image
             style={[styles.md24SearchChild, styles.image5IconLayout]}
             contentFit="cover"
@@ -191,7 +82,7 @@ const Home = () => {
           />
           <View style={styles.md24SearchItem} />
         </Pressable>
-        <Pressable style={styles.md24Layout} onPress={() => {}}>
+        <Pressable style={styles.md24Layout} onPress={() => navigation.navigate('HomeNotification')}>
           <Image
             style={styles.icon}
             contentFit="cover"
@@ -203,11 +94,11 @@ const Home = () => {
         <View style={[styles.blurBg, styles.textPosition]} />
         <View style={[styles.navigationItem, styles.bookItemSpaceBlock]}>
           <Image
-            style={styles.lg32Layout}
+            style={styles.lg33Layout}
             contentFit="cover"
             source={require("../assets/home-fill.png")}
           />
-          <Text style={[styles.home1, styles.tagTypo]}>Home</Text>
+          <Text style={[styles.home2, styles.tagTypo]}>Home</Text>
         </View>
         <View style={[styles.lg32MessageLineParent, styles.bookItemSpaceBlock]}>
           <Image
@@ -221,18 +112,17 @@ const Home = () => {
           <Image
             style={[styles.xl48AddChild, styles.textPosition]}
             contentFit="cover"
-            source={require("../assets/ellipse-2.png")} //ellispe 17
+            source={require("../assets/Add.png")} //ellispe 17
           />
-          <View style={[styles.xl48AddItem, styles.xl48Layout]} />
-          <View style={[styles.xl48AddInner, styles.xl48Layout]} />
         </View>
         <View style={[styles.lg32BookLineParent, styles.bookItemSpaceBlock]}>
           <Image
-            style={styles.lg32Layout}
-            contentFit="cover"
+            style={styles.lg33Layout}
+            //contentFit="cover"
+            resizeMode="contain"
             source={require("../assets/book-line.png")}
           />
-          <Text style={[styles.home1, styles.tagTypo]}>My Books</Text>
+          <Text style={[styles.home2, styles.tagTypo]}>My Books</Text>
         </View>
         <View style={[styles.lg32ProfileParent, styles.bookItemSpaceBlock]}>
           <View style={[styles.lg32Profile, styles.lg32Layout]}>
@@ -247,6 +137,12 @@ const Home = () => {
 };
 
 const styles = StyleSheet.create({
+  activeTabText: {
+    color: '#0C0E12'  
+  },
+  inactiveTabText: {
+    color: '#6E7A9F'  
+  },
   bookItemSpaceBlock: {
     paddingHorizontal: 0,
     paddingVertical: Padding.p_3xs,
@@ -343,6 +239,16 @@ const styles = StyleSheet.create({
   lg32Layout: {
     height: 32,
     width: 32,
+    justifyContent: 'center', 
+    alignItems: 'center', 
+    overflow: 'hidden',
+  },
+  lg33Layout: {
+    height: 28,
+    width: 28,
+    justifyContent: 'center', // 이미지를 중앙에 배치
+    alignItems: 'center', // 이미지를 중앙에 배치
+    overflow: 'hidden',
   },
   image5Icon: {
     left: "0%",
@@ -545,6 +451,10 @@ const styles = StyleSheet.create({
     marginTop: 6,
     color: Color.iconOnLightActive,
   },
+  home2: {
+    marginTop: 10,
+    color: Color.iconOnLightActive,
+  },
   navigationItem: {
     zIndex: 1,
     alignItems: "center",
@@ -628,9 +538,11 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     width: 360,
     overflow: "hidden",
+    backgroundColor: Color.containerWhite
   },
   home: {
     height: 640,
+    marginTop: screenHeight*0.03,
     overflow: "hidden",
     width: "100%",
     flex: 1,
